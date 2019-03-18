@@ -40,22 +40,22 @@ if __name__ == '__main__':
     opt.std = get_std(opt.norm_value)
     print(opt)
     with open(os.path.join(opt.result_path, 'opts.json'), 'w') as opt_file:
-        json.dump(vars(opt), opt_file) #options
+        json.dump(vars(opt), opt_file)
 
-    torch.manual_seed(opt.manual_seed) #Sets the seed for generating random numbers
+    torch.manual_seed(opt.manual_seed)
 
     model, parameters = generate_model(opt)
     print(model)
-    criterion = nn.CrossEntropyLoss() #NLLloss and logSoftmax
+    criterion = nn.CrossEntropyLoss()
     if not opt.no_cuda:
-        criterion = criterion.cuda() #use of cuda
+        criterion = criterion.cuda()
 
     if opt.no_mean_norm and not opt.std_norm:
         norm_method = Normalize([0, 0, 0], [1, 1, 1])
     elif not opt.std_norm:
         norm_method = Normalize(opt.mean, [1, 1, 1])
     else:
-        norm_method = Normalize(opt.mean, opt.std) #normalization
+        norm_method = Normalize(opt.mean, opt.std)
 
     if not opt.no_train:
         assert opt.train_crop in ['random', 'corner', 'center']
@@ -92,15 +92,13 @@ if __name__ == '__main__':
             dampening = 0
         else:
             dampening = opt.dampening
-
         optimizer = optim.SGD(
             parameters,
             lr=opt.learning_rate,
             momentum=opt.momentum,
             dampening=dampening,
             weight_decay=opt.weight_decay,
-            nesterov=opt.nesterov) #optimizer
-
+            nesterov=opt.nesterov)
         scheduler = lr_scheduler.ReduceLROnPlateau(
             optimizer, 'min', patience=opt.lr_patience)
     if not opt.no_val:
