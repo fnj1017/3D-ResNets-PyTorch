@@ -1,5 +1,5 @@
-from datasets.kinetics import Kinetics
-from datasets.activitynet import ActivityNet
+#from datasets.kinetics import Kinetics
+#from datasets.activitynet import ActivityNet
 from datasets.ucf101 import UCF101
 from datasets.hmdb51 import HMDB51
 
